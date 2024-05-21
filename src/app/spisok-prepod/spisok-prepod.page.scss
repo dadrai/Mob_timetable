@@ -1,0 +1,117 @@
+:root {
+    --ion-background-color: #ffffff;
+  
+  }
+  
+  .card {
+    position: relative;
+    display: inline-block;
+    top: 25%;
+    left: 17%;
+   
+  }
+  
+  .card .menu{
+  display: inline-flex;
+  width: 65px;
+  height: 45px;
+  border-radius: 6px;
+  margin-left: 15px;
+  }
+  
+  .card input{
+    margin-left: 13px;
+    margin-top: 3px;
+    height: 40px;
+  }
+
+  
+  page-home {
+    ion-content{
+      --background: white !important;
+    }
+    
+  }
+  ion-header{
+    --background: white !important;
+  }
+  
+  .ion-content{
+    display: flex;
+
+  }
+
+  .ion-content ion-card{
+    border: 1px solid blue;
+    margin: 2px;
+  }
+  
+  
+  .time {
+    position: relative;
+    top: 38px;
+    left: 40%;
+    right: 43%;
+    bottom: 0%;
+  }
+  .time b{
+    background: #e782eb;
+    outline: 4px solid #e782eb; //обводка объекта
+    border-radius: 3px;
+    color: black;
+    font-weight: bold;
+  }
+  
+  ion-card {
+    
+    --background: #7e7e7e;
+    --color: #000000;
+    font-weight: bold;
+    margin-bottom: 0px;
+    margin-left: 20px;
+    width: 350px;
+    
+  }
+  
+  .form_radio_btn {
+    display: inline-block;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 6px;
+  }
+  
+  .form_radio_btn input[type=radio] {
+    display: none;
+  }
+  
+  .form_radio_btn label {
+    display: inline-block;
+    padding: 0px 15px;
+    line-height: 15px; //visota texta
+    border-radius: 6px;
+    user-select: none;
+  }
+  
+  /* Checked */
+  .form_radio_btn input[type=radio]:checked+label {
+    background: #e782eb;
+  }
+
+  .select_group {
+ 
+    position: relative;
+    top: 0px;
+    left: 19%;
+    right: 0%;
+    bottom: 30px;
+  
+  }
+  .select_group select {
+    background: #e782eb;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      color: black;
+      font-weight: bold;
+      width: auto;
+      text-align: center;
+  }

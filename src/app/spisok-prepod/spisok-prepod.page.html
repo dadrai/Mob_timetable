@@ -1,0 +1,129 @@
+<meta charset=utf-8>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+
+
+<ion-header>
+  <div class="card">
+
+    <!-- <div class="form_radio_btn" [routerLink]="['/home']" (onchange)="refresh()">
+      <input id="radio-1" type="radio" name="radio" value="1">
+      <label for="radio-1"> <img style="width: 40px;"
+          src="https://cdn.icon-icons.com/icons2/3178/PNG/512/team_people_man_woman_group_icon_193939.png"></label>
+    </div>
+
+    <div class="form_radio_btn" [routerLink]="['/spisok-prepod']" (onchange)="refresh()">
+      <input id="radio-2" type="radio" name="radio" value="2" checked>
+
+      <label for="radio-2"><img style="width: 40px;"
+          src="https://cdn-icons-png.flaticon.com/512/167/167752.png" ></label>
+    </div>
+
+    <div class="form_radio_btn" >
+      <input id="radio-3" type="radio" name="radio" value="3">
+      <label for="radio-3"><img style="width: 40px;"
+          src="https://cdn-icons-png.flaticon.com/512/2793/2793563.png"></label>
+
+    </div> -->
+    <div class="menu" >
+      <input [routerLink]="['/home']" type="image" style="width: 40px;"
+      src="https://cdn.icon-icons.com/icons2/3178/PNG/512/team_people_man_woman_group_icon_193939.png">
+      </div>
+      <div class="menu" style="background-color: #e782eb;">
+      <input [routerLink]="['/spisok-prepod']" type="image" style="width: 40px;"
+      src="https://cdn-icons-png.flaticon.com/512/167/167752.png">
+      </div>
+      <div class="menu" >
+         <input [routerLink]="['/rasp-auditor']" type="image" style="width: 40px;"
+         src="https://cdn-icons-png.flaticon.com/512/2793/2793563.png">
+      </div>
+  </div>
+  
+  
+
+</ion-header>
+
+<ion-content style="display: flex;" [fullscreen]="true">
+
+
+
+  <!--  -->
+
+
+
+  <ion-card *ngFor="let SpisokPrepod of SpisokPrepod">
+    <ion-card-header>
+
+      <ion-card-title style="text-align: center">
+        <p> <img
+            src="https://us.123rf.com/450wm/feelisgood/feelisgood1709/feelisgood170900745/85757402-flat-user-icon-member-sign-avatar-button-quick-and-easy-recolorable-shape-isolated-from-background-v.jpg?ver=6"
+            alt="Преподаватель" style="width:80%"></p>
+        <b>{{SpisokPrepod.fam_pr}} {{SpisokPrepod.name_pr}} {{SpisokPrepod.otch_pr}} </b>
+      </ion-card-title>
+      <ion-card-subtitle></ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content style="text-align: center">
+      <p>Email: qwerty@mail.ru</p>
+      <p>Тел.: 8-991-123-43-23</p>
+      <input [(ngModel)]="id_prepod" value={{SpisokPrepod.id_prepod}} hidden>
+      <p><ion-button [routerLink]="['/rasp-prepod']" [queryParams]="{id_prepod: SpisokPrepod.id_prepod}" style="color:black; --background: #e782eb;">Показать Расписание</ion-button></p>
+
+
+    </ion-card-content>
+  </ion-card>
+
+
+
+
+
+
+</ion-content>
+
+
+
+
+<ion-footer>
+
+  <!-- Vibor gruppi -->
+
+  <!-- <img style="width: 20px; margin-left: 120px; margin-bottom: -20px; position: relative; z-index: 1;"
+      src="https://cdn-icons-png.flaticon.com/512/109/109164.png"> -->
+
+
+  <div class="select_group" style="z-index: 2;" autofocus>
+
+    <select (change)="getPrepod()" [(ngModel)]="id_prepod" id="groupselect">
+
+      <option value="null" selected disabled> Выберите..</option>
+      <option *ngFor="let listPrepods of listPrepods" value={{listPrepods.id_prepod}}>
+        {{listPrepods.Prepod}}</option>
+
+    </select>
+
+
+
+  </div>
+  <!-- 
+    <ion-item-sliding style="width: 420px; margin-left: -15px;">
+      <ion-item-options side="start" (ionSwipe)="pred_week(); getRaspGr()">
+        <ion-item-option style="background-color:  #e782eb; border-radius: 6px;" expandable><p style="margin-left: 15px;">  {{week_today}}</p></ion-item-option>
+      </ion-item-options>
+  
+      <ion-item >
+        <div class= "day_bott"  *ngFor="let days of days; let i=index">
+          <div  class="form_radio_btn">
+            <input  type="radio" (change)="getRaspGr()" [(ngModel)]="vibor_day" id={{days}}.{{i}} name="days" value={{i+1}} />
+            <label  for="{{days}}.{{i}}" >{{days}}<br></label>    
+          </div>
+        </div>
+      </ion-item>
+  
+      <ion-item-options side="end" (ionSwipe)="next_week(); getRaspGr()" >
+        <ion-item-option style="background-color:  #e782eb; border-radius: 6px;"  expandable> <p style="margin-right: 15px;">  {{week_today}}</p></ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding> -->
+
+
+
+</ion-footer>

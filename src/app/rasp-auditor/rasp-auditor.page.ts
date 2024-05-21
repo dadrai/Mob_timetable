@@ -1,23 +1,20 @@
-﻿import { Component, ElementRef, Injectable, NgZone, QueryList, ViewChildren } from '@angular/core';
+import { Component , ElementRef, Injectable, NgZone, QueryList, ViewChildren } from '@angular/core';
 import { ApiService } from '../api.service';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { ActionSheetController, Gesture, GestureController, IonCard } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-
-
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
-
+  selector: 'app-rasp-auditor',
+  templateUrl: './rasp-auditor.page.html',
+  styleUrls: ['./rasp-auditor.page.scss'],
 })
-export class HomePage {
+export class RaspAuditorPage {
+
 
   headers: HttpHeaders;
   days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
   day:any=[];
-  groups: any = [];
+  auditors: any = [];
   today: any;
   Группа: any;
   RaspGr: any = [];
@@ -29,17 +26,16 @@ export class HomePage {
   VremyaS: any;
   VremyaPo: any;
   Prepod: any;
-  Ayditoriya: any;
+  Ayditoriya: any ='1';
   DateToday='Нет занятий'
   groupa:any;
-  id_group:any;
+  id_aydit:any;
  // groupa: string = '1001';
   date = new Date();
   vibor_day = this.date.getDay();
-
+  audit:any;
   week_today=this.getWeekNumber(this.date) + 18;
   chek_day:any=[];
-  k:boolean=false;
   
   constructor(
     public _apiService: ApiService,
@@ -53,9 +49,9 @@ export class HomePage {
     this.headers.append('Accept-Charset', 'utf-8');
     this.headers.append('Content-Type', 'application/json; charset=utf-8');
     this.headers.append('Accept-Control-Allow-Origin', '*');
-    this.getGroups();
+    this.getAudit();
     this.chek()
-  this.d();
+    this.d();
     //this.refresh();
     //this.getRaspGr();
     //this.getDateToday();
@@ -67,7 +63,9 @@ export class HomePage {
   proverka() {
     console.log("124");
   }
-
+  refresh(): void {
+    window.location.reload();
+}
  
   getWeekNumber(d:Date) {
     // Copy date so don't modify original
@@ -109,16 +107,32 @@ chek(){
   
 }
 
-  getGroups() {
-    this._apiService.getGroups().subscribe((res: any) => {
-      console.log(" getGroups SUCC ++++", res);
-      this.groups = res;
-      
+  getAudit() {
+    var url = 'http://localhost/timetable/src/app/backend/getAudit.php?id_audit='+this.id_aydit;
+    this.http.get(url).subscribe((res: any) => {
+      console.log("vibor SUCC ++++", res);
+      this.auditors = res;
+
 
     }, (error: any) => {
-      console.log("getGroups ERrr ---", error);
+      console.log(url, "vibor ERrr ---", error);
     })
   }
+
+  ch_day(day:any){
+    this.vibor_day=day;
+    }
+    
+    d(){
+      
+      this.day[0]="";
+      this.day[1]="";
+      this.day[2]="";
+      this.day[3]="";
+      this.day[4]="";
+      this.day[5]="";
+    this.day[this.vibor_day-1]="act";
+    }
 
   // getRaspGr(){
 
@@ -136,41 +150,26 @@ chek(){
     const monthNames = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
       "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
 
-    var url = 'http://localhost/timetable/src/app/backend/getRaspGr.php?' + 'id_group=' + this.id_group
+    var url = 'http://localhost/timetable/src/app/backend/getRaspAy.php?' + 'id_aydit=' + this.id_aydit
       + '&vibor_day=' + this.vibor_day +'&week_today='+this.week_today;
     this.http.get(url).subscribe((res: any) => {
-      console.log("getRaspG SUCC ++++", res);
+      console.log("getRaspAYDIT SUCC ++++", res);
       this.RaspGr = res;
+      
       if (res!=''){let dateStr = this.RaspGr[0].DataZ;
         let date = new Date(dateStr);
         this.DateToday = date.getDate() + " " + monthNames[date.getMonth()];
-        console.log('DATA=' + this.DateToday);}
+        console.log('DATA=' + this.DateToday);
+        console.log("aydut = ", this.RaspGr[0].Ayditoriya);
+        console.log("ID aydut = ", this.RaspGr[0].id_aydit);}
         else this.DateToday='Нет занятий';
       
     }, (error: any) => {
-      console.log(url, "getRaspG ERrr ---", error);
+      console.log(url, "getRaspAUDIT ERrr ---", error);
     })
+
   }
-ch_day(day:any){
-this.vibor_day=day;
-}
 
-d(){
-  
-  this.day[0]="";
-  this.day[1]="";
-  this.day[2]="";
-  this.day[3]="";
-  this.day[4]="";
-  this.day[5]="";
-this.day[this.vibor_day-1]="act";
-}
-
-  refresh(item: any): void {
-    // if (this.k==false) { this.k=true;  window.location.reload();  console.log('-' , this.k);}
-    // else{console.log('+')}
-    item.location.reload();
-}
   // getDateToday(){
   //   let date: Date = new Date();  
 

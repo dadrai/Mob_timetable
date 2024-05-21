@@ -1,18 +1,21 @@
-﻿import { Component, ElementRef, Injectable, NgZone, QueryList, ViewChildren } from '@angular/core';
+
+import { Component, ElementRef, Injectable, NgZone, QueryList, ViewChildren } from '@angular/core';
 import { ApiService } from '../api.service';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { ActionSheetController, Gesture, GestureController, IonCard } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-
+import { ActivatedRoute, Params,ParamMap } from '@angular/router'
+import { query } from '@angular/animations';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-rasp-prepod',
+  templateUrl: './rasp-prepod.page.html',
+  styleUrls: ['./rasp-prepod.page.scss'],
 
 })
-export class HomePage {
+export class RaspPrepodPage {
 
   headers: HttpHeaders;
   days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
@@ -20,7 +23,8 @@ export class HomePage {
   groups: any = [];
   today: any;
   Группа: any;
-  RaspGr: any = [];
+  RaspPr: any = [];
+  listPrepods: any=[];
   Gruppa: any;
   DenNedeli: any;
   TipNedeli: any;
@@ -33,40 +37,57 @@ export class HomePage {
   DateToday='Нет занятий'
   groupa:any;
   id_group:any;
+ public id_prepod1:any;
+ id_prepod = '';
+  //id_prepod =2477;
  // groupa: string = '1001';
   date = new Date();
   vibor_day = this.date.getDay();
 
   week_today=this.getWeekNumber(this.date) + 18;
-  chek_day:any=[];
-  k:boolean=false;
+  chek_pr:boolean = false;
   
   constructor(
     public _apiService: ApiService,
     public actionShCtrl: ActionSheetController,
     private http: HttpClient,
     private gestureCtrl:GestureController,
-    private zone: NgZone
+    private zone: NgZone,
+    private router:ActivatedRoute
   ) {
     this.headers = new HttpHeaders();
     this.headers.append("Accept", 'application/json');
     this.headers.append('Accept-Charset', 'utf-8');
     this.headers.append('Content-Type', 'application/json; charset=utf-8');
     this.headers.append('Accept-Control-Allow-Origin', '*');
-    this.getGroups();
-    this.chek()
-  this.d();
     //this.refresh();
-    //this.getRaspGr();
+    
+    this.getIdPrepod();
+    this.getRaspPr();
+    this.SpisPrepod();
+    this.d();
+    
     //this.getDateToday();
    
-
+    
 
   }
-
   proverka() {
     console.log("124");
   }
+
+  refresh(): void {
+    window.location.reload();
+}
+
+  getIdPrepod(){
+    this.router.queryParams
+    .subscribe((params) => {
+
+    })
+  }
+ 
+ 
 
  
   getWeekNumber(d:Date) {
@@ -104,21 +125,24 @@ next_week(item:any){
 
 chek(){
   
-    this.chek_day[this.vibor_day-1]="checked";
-    console.log('Chek =  '+this.chek_day);
+    this.chek_pr = true;
   
 }
 
-  getGroups() {
-    this._apiService.getGroups().subscribe((res: any) => {
-      console.log(" getGroups SUCC ++++", res);
-      this.groups = res;
-      
+SpisPrepod() {
 
-    }, (error: any) => {
-      console.log("getGroups ERrr ---", error);
-    })
-  }
+
+  var url = 'http://localhost/timetable/src/app/backend/getPrepod.php?'+ 'id_prepod=' + this.id_prepod;
+  this.http.get(url).subscribe((res: any) => {
+    console.log("vibor SUCC ++++", res);
+    this.listPrepods = res;
+    
+
+  }, (error: any) => {
+    console.log(url, "vibor ERrr ---", error);
+  })
+
+}
 
   // getRaspGr(){
 
@@ -131,46 +155,67 @@ chek(){
   //   })
   // }
 
-  getRaspGr() {
+  getRaspPr() {
     this.d();
     const monthNames = ["Января", "Февраля", "Марта", "Апреля", "Мая", "Июня",
       "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря"];
+     
+      if (this.chek_pr == false){
+      this.router.queryParams.subscribe(data =>{
+        this.id_prepod=data['id_prepod'];
 
-    var url = 'http://localhost/timetable/src/app/backend/getRaspGr.php?' + 'id_group=' + this.id_group
+    var url = 'http://localhost/timetable/src/app/backend/getRaspPr.php?' + 'id_prepod=' + this.id_prepod
       + '&vibor_day=' + this.vibor_day +'&week_today='+this.week_today;
+      
     this.http.get(url).subscribe((res: any) => {
-      console.log("getRaspG SUCC ++++", res);
-      this.RaspGr = res;
-      if (res!=''){let dateStr = this.RaspGr[0].DataZ;
+      console.log("getRaspPR SUCC ++++", res);
+      console.log("id prepod = ", this.id_prepod)
+      this.RaspPr = res;
+      
+      if (res!=''){let dateStr = this.RaspPr[0].DataZ;
         let date = new Date(dateStr);
         this.DateToday = date.getDate() + " " + monthNames[date.getMonth()];
         console.log('DATA=' + this.DateToday);}
         else this.DateToday='Нет занятий';
       
     }, (error: any) => {
-      console.log(url, "getRaspG ERrr ---", error);
+      console.log(url, "getRaspPR ERrr ---", error);
+    })
+  });  }
+  else {
+    var url = 'http://localhost/timetable/src/app/backend/getRaspPr.php?' + 'id_prepod=' + this.id_prepod
+      + '&vibor_day=' + this.vibor_day +'&week_today='+this.week_today;
+      
+    this.http.get(url).subscribe((res: any) => {
+      console.log("getRaspPR SUCC ++++", res);
+      console.log("id prepod = ", this.id_prepod)
+      this.RaspPr = res;
+      if (res!=''){let dateStr = this.RaspPr[0].DataZ;
+        let date = new Date(dateStr);
+        this.DateToday = date.getDate() + " " + monthNames[date.getMonth()];
+        console.log('DATA=' + this.DateToday);}
+        else this.DateToday='Нет занятий';
+      
+    }, (error: any) => {
+      console.log(url, "getRaspPR ERrr ---", error);
     })
   }
-ch_day(day:any){
-this.vibor_day=day;
-}
+  }
 
-d(){
-  
-  this.day[0]="";
-  this.day[1]="";
-  this.day[2]="";
-  this.day[3]="";
-  this.day[4]="";
-  this.day[5]="";
-this.day[this.vibor_day-1]="act";
-}
-
-  refresh(item: any): void {
-    // if (this.k==false) { this.k=true;  window.location.reload();  console.log('-' , this.k);}
-    // else{console.log('+')}
-    item.location.reload();
-}
+  ch_day(day:any){
+    this.vibor_day=day;
+    }
+    
+    d(){
+      
+      this.day[0]="";
+      this.day[1]="";
+      this.day[2]="";
+      this.day[3]="";
+      this.day[4]="";
+      this.day[5]="";
+    this.day[this.vibor_day-1]="act";
+    }
   // getDateToday(){
   //   let date: Date = new Date();  
 

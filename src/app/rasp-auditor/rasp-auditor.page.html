@@ -1,4 +1,3 @@
-
 <script
   src="https://code.jquery.com/jquery-3.7.0.min.js"
   integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
@@ -8,13 +7,13 @@
 <ion-header >
   <div class="card">
 
-    <!-- <div class="form_radio_btn" [routerLink]="['/home']" >
-      <input id="radio-1" type="radio" name="radio" value="1" checked>
+    <!-- <div class="form_radio_btn" [routerLink]="['/home']">
+      <input id="radio-1" type="radio" name="radio" value="1" >
       <label for="radio-1"> <img style="width: 40px;"
           src="https://cdn.icon-icons.com/icons2/3178/PNG/512/team_people_man_woman_group_icon_193939.png"></label>
     </div>
 
-    <div  class="form_radio_btn" [routerLink]="['/spisok-prepod']" >
+    <div class="form_radio_btn" [routerLink]="['/spisok-prepod']">
       <input id="radio-2" type="radio" name="radio" value="2">
 
       <label for="radio-2"><img style="width: 40px;"
@@ -22,31 +21,29 @@
     </div>
 
     <div class="form_radio_btn" [routerLink]="['/rasp-auditor']" >
-      <input id="radio-3" type="radio" name="radio" value="3" >
-      <label for="radio-3"><img style="width: 40px;" 
+      <input id="radio-3" type="radio" name="radio" value="3" checked>
+      <label for="radio-3"><img style="width: 40px;"
           src="https://cdn-icons-png.flaticon.com/512/2793/2793563.png"></label>
 
     </div> -->
-    <div class="menu" style="background-color: #e782eb;">
-    <input [routerLink]="['/home']" type="image" style="width: 40px;"
-    src="https://cdn.icon-icons.com/icons2/3178/PNG/512/team_people_man_woman_group_icon_193939.png">
-    </div>
+
     <div class="menu" >
-    <input [routerLink]="['/spisok-prepod']" type="image" style="width: 40px;"
-    src="https://cdn-icons-png.flaticon.com/512/167/167752.png">
-    </div>
-    <div class="menu" >
-       <input [routerLink]="['/rasp-auditor']" type="image" style="width: 40px;"
-       src="https://cdn-icons-png.flaticon.com/512/2793/2793563.png">
-    </div>
+      <input [routerLink]="['/home']" type="image" style="width: 40px;"
+      src="https://cdn.icon-icons.com/icons2/3178/PNG/512/team_people_man_woman_group_icon_193939.png">
+      </div>
+      <div class="menu" >
+      <input [routerLink]="['/spisok-prepod']" type="image" style="width: 40px;"
+      src="https://cdn-icons-png.flaticon.com/512/167/167752.png">
+      </div>
+      <div class="menu" style="background-color: #e782eb;">
+         <input [routerLink]="['/rasp-auditor']" type="image" style="width: 40px;"
+         src="https://cdn-icons-png.flaticon.com/512/2793/2793563.png">
+      </div>
     
- 
-
-
   </div>
-
   <div class="time" >
    <b>{{DateToday}}</b> <br>
+ 
   </div>
  
 
@@ -76,7 +73,7 @@
         <ion-card-content>
           
           <p class="leftstr"><b> {{RaspGr.VremyaS}} - {{RaspGr.VremyaPo}} </b></p>
-          <p class="rightstr"><b>{{RaspGr.Ayditoriya}}</b></p>
+          <p class="rightstr"><b> Гр. {{RaspGr.Gruppa}}</b></p>
           <p style="margin-bottom: 8px; font-size: 20px;"><u><b>{{RaspGr.Prepod}}</b></u></p> 
           {{RaspGr.Disciplina}}
         </ion-card-content>
@@ -99,18 +96,18 @@
       src="https://cdn-icons-png.flaticon.com/512/109/109164.png"> -->
   <div class="select_group">
     
-    <select  (change)=" getRaspGr();  " [(ngModel)]="id_group"  id ="groupselect">
+    <select  (change)="getRaspGr()" [(ngModel)]="id_aydit"  id ="groupselect">
       
       <option value="null" selected disabled> Выберите..</option>
       
-       <option *ngFor="let groups of groups"  value={{groups.id_group}}>
-        {{groups.Gruppa}}</option>
+       <option *ngFor="let auditors of auditors"  value={{auditors.id_aydit}}>
+        {{auditors.Ayditoriya}}</option>
     
     </select>
   </div>
   
     <ion-item-sliding style="width: 420px; margin-left: -15px;" #slidingItem>
-      <ion-item-options side="start" (ionSwipe)="pred_week(slidingItem); getRaspGr(); " >
+      <ion-item-options side="start" (ionSwipe)="pred_week(slidingItem); getRaspGr(); ">
         <ion-item-option style="background-color:  #e782eb; border-radius: 6px;" expandable><p style="margin-left: 15px;">  {{week_today}}</p></ion-item-option>
       </ion-item-options>
   
@@ -120,7 +117,7 @@
         </div>
       </ion-item>
   
-      <ion-item-options side="end" (ionSwipe)="next_week(slidingItem); getRaspGr();" >
+      <ion-item-options side="end" (ionSwipe)="next_week(slidingItem); getRaspGr()" >
         <ion-item-option style="background-color:  #e782eb; border-radius: 6px;"  expandable> <p style="margin-right: 15px;">  {{week_today}}</p></ion-item-option>
       </ion-item-options>
     </ion-item-sliding>

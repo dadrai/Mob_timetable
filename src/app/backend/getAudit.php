@@ -6,7 +6,7 @@ include "config.php";
 $data = array();
 $groups=array();
 
-$q = mysqli_query($con, "SELECT distinct `Gruppa`,`id_group` FROM `tgputimetable` order by `tgputimetable`.`Gruppa` asc");
+$q = mysqli_query($con, "SELECT distinct `Ayditoriya`, `id_aydit` FROM `tgputimetable` order by `tgputimetable`.`Ayditoriya` asc");
 $today = date('Y-m-j 00:00:00');
 while($row= mysqli_fetch_object($q)){
     $data[]=$row;
